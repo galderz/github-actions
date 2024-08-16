@@ -40,9 +40,6 @@ jobs:
       - name: Run perf report -q
         run: |
           perf report -q --stdio | grep cycles | wc -l
-      - name: Run perf record to file
-        run: |
-          perf record --event cycles --output perf-record-validate.data echo 1
   test-perf-record-output:
     runs-on: ubuntu-22.04
     steps:
