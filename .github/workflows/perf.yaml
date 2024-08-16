@@ -1,0 +1,31 @@
+name: Perf
+
+on:
+  # enable users to manually trigger with workflow_dispatch
+  workflow_dispatch:
+
+jobs:
+  test-perf-stat:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Set up perf (Linux)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y linux-tools-common linux-tools-generic linux-tools-`uname -r`
+          echo -1 | sudo tee /proc/sys/kernel/perf_event_paranoid
+          perf stat echo 1
+      - name: Run perf command
+        run: |
+          perf stat --event cycles --log-fd 2 echo 1
+  test-perf-record:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Set up perf (Linux)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y linux-tools-common linux-tools-generic linux-tools-`uname -r`
+          echo -1 | sudo tee /proc/sys/kernel/perf_event_paranoid
+          perf stat echo 1
+      - name: Run perf command
+        run: |
+          perf record --event cycles echo 1
