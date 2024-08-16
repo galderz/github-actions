@@ -37,3 +37,6 @@ jobs:
       - name: Run perf report -v
         run: |
           perf report -v --stdio | grep 'cycles' | wc -l
+      - name: Run perf report -q
+        run: |
+          perf report -q --stdio | grep 'cycles' | wc -l
