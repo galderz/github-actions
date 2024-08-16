@@ -29,3 +29,4 @@ jobs:
       - name: Run perf command
         run: |
           perf record --event cycles echo 1
+          perf report --stdio | grep 'cycles' | wc -l
