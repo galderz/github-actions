@@ -16,7 +16,7 @@ jobs:
           sudo apt-get install -y linux-tools-common linux-tools-generic linux-tools-`uname -r`
           echo -1 | sudo tee /proc/sys/kernel/perf_event_paranoid
           perf stat echo 1
-      - name: Run perf command
+      - name: Run perf stat
         run: |
           perf stat --event cycles --log-fd 2 echo 1
   test-perf-record:
@@ -33,10 +33,13 @@ jobs:
           perf record --event cycles echo 1
       - name: Run perf report
         run: |
-          perf report --stdio | grep 'cycles' | wc -l
+          perf report --stdio | grep cycles | wc -l
       - name: Run perf report -v
         run: |
-          perf report -v --stdio | grep 'cycles' | wc -l
+          perf report -v --stdio | grep cycles | wc -l
       - name: Run perf report -q
         run: |
-          perf report -q --stdio | grep 'cycles' | wc -l
+          perf report -q --stdio | grep cycles | wc -l
+      - name: Run perf record to file
+        run: |
+          perf record --event cycles --output perf-record-validate.data echo 1
