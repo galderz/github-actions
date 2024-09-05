@@ -61,7 +61,10 @@ jobs:
       - name: Print exit status of last command
         run: |
           echo $?
-      - name: Run perf report -q
+      - name: Run perf report
+        run: |
+          perf report -q -i perf-record-validate.data --stdio
+      - name: Run perf report and check presence of event
         run: |
           perf report -q -i perf-record-validate.data --stdio | grep cycles | wc -l
   test-perf-record-output-multi:
@@ -82,6 +85,9 @@ jobs:
       - name: Print exit status of last command
         run: |
           echo $?
-      - name: Run perf report -q
+      - name: Run perf report
+        run: |
+          perf report -q -i perf-record-validate.data --stdio
+      - name: Run perf report and check presence of events
         run: |
           perf report -q -i perf-record-validate.data --stdio | grep -E 'cycles|cpu-clock' | wc -l
