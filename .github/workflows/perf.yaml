@@ -78,10 +78,10 @@ jobs:
           perf list
       - name: Run perf record
         run: |
-          perf record --event cycles,branches --output perf-record-validate.data echo 1
+          perf record --event cycles,cpu-clock --output perf-record-validate.data echo 1
       - name: Print exit status of last command
         run: |
           echo $?
       - name: Run perf report -q
         run: |
-          perf report -q -i perf-record-validate.data --stdio | grep -E 'cycles|branches' | wc -l
+          perf report -q -i perf-record-validate.data --stdio | grep -E 'cycles|cpu-clock' | wc -l
