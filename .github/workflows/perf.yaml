@@ -19,6 +19,9 @@ jobs:
       - name: Run perf stat
         run: |
           perf stat --event cycles --log-fd 2 echo 1
+      - name: Print exit status of last command
+        run: |
+          echo $?
   test-perf-record:
     runs-on: ubuntu-22.04
     steps:
@@ -31,6 +34,9 @@ jobs:
       - name: Run perf record
         run: |
           perf record --event cycles echo 1
+      - name: Print exit status of last command
+        run: |
+          echo $?
       - name: Run perf report
         run: |
           perf report --stdio | grep cycles | wc -l
@@ -52,6 +58,9 @@ jobs:
       - name: Run perf record
         run: |
           perf record --event cycles --output perf-record-validate.data echo 1
+      - name: Print exit status of last command
+        run: |
+          echo $?
       - name: Run perf report -q
         run: |
           perf report -q -i perf-record-validate.data --stdio | grep cycles | wc -l
