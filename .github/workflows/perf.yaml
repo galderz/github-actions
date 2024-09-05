@@ -64,3 +64,21 @@ jobs:
       - name: Run perf report -q
         run: |
           perf report -q -i perf-record-validate.data --stdio | grep cycles | wc -l
+  test-perf-record-output-multi:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Set up perf (Linux)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y linux-tools-common linux-tools-generic linux-tools-`uname -r`
+          echo -1 | sudo tee /proc/sys/kernel/perf_event_paranoid
+          perf stat echo 1
+      - name: Run perf record
+        run: |
+          perf record --event cycles,branches --output perf-record-validate.data echo 1
+      - name: Print exit status of last command
+        run: |
+          echo $?
+      - name: Run perf report -q
+        run: |
+          perf report -q -i perf-record-validate.data --stdio | grep -E 'cycles|branches' | wc -l
