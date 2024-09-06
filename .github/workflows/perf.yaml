@@ -133,3 +133,24 @@ jobs:
       - name: Run perf record then perf report stats and check presence of event
         run: |
           perf record --event cycles,cpu-clock -o - true | perf report -i - --stats | grep -E 'cycles|cpu-clock' | wc -l
+  test-perf-stats-multi-unique:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Set up perf (Linux)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y linux-tools-common linux-tools-generic linux-tools-`uname -r`
+          echo -1 | sudo tee /proc/sys/kernel/perf_event_paranoid
+          perf stat echo 1
+      - name: Run perf list
+        run: |
+          perf list
+      - name: Run perf record then perf report stats
+        run: |
+          perf record --event cycles,cpu-clock -o - true | perf report -i - --stats
+      - name: Print exit status of last command
+        run: |
+          echo $?
+      - name: Run perf record then perf report stats and check presence of event
+        run: |
+          perf record --event cycles,cpu-clock -o - true | perf report -i - --stats | grep -E 'cycles|cpu-clock' | sort | uniq | wc -l
