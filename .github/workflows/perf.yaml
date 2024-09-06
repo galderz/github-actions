@@ -132,4 +132,4 @@ jobs:
           echo $?
       - name: Run perf record then perf report stats and check presence of event
         run: |
-          perf record --event cycles -o - true | perf report -i - --stats | grep -E 'cycles|cpu-clock' | wc -l
+          perf record --event cycles,cpu-clock -o - true | perf report -i - --stats | grep -E 'cycles|cpu-clock' | wc -l
